@@ -15,7 +15,7 @@
       --accent2: #a78bfa;
       --teal:    #2dd4bf;
       --pink:    #f472b6;
-      --text:    #e2e8f0;
+      --text:    #fff;
       --muted:   #64748b;
       --border:  rgba(255,255,255,0.07);
     }
@@ -31,6 +31,7 @@
       line-height: 1.7;
       overflow-x: hidden;
     }
+
 
     #starfield {
       position: fixed;
@@ -49,15 +50,15 @@
     }
 
     .nebula-galaxy {
-      width: 800px;
+      width: 1000px;
       height: 1000px;
       background: radial-gradient(circle at center,
         rgba(255,255,255,0.98) 0%,
         rgba(180,210,255,0.75) 12%,
         rgba(100,160,255,0.35) 30%,
-        transparent 70%
+        transparent 50%
       );
-      bottom: -400px;
+      bottom: -500px;
       right: -600px;
       opacity: 1;
       filter: blur(14px);
@@ -72,7 +73,7 @@
       background: radial-gradient(ellipse at 45% 50%,
         rgba(100,160,255,0.55) 0%,
         rgba(60,120,255,0.3) 40%,
-        transparent 70%
+        transparent 60%
       );
       filter: blur(35px);
       animation: volumetric1 14s ease-in-out infinite alternate;
@@ -165,11 +166,12 @@
       justify-content: center;
       padding-top: 8rem;
     }
-
+    
     h1 {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: clamp(1.6rem, 4vw, 2.6rem);
-      font-weight: 1000;
+      text-align: center;
+      font-family: 'IBM Plex Sans', sans-serif; 
+      font-size: clamp(2.3rem, 4vw, 3.3rem);
+      font-weight: 1500;
       line-height: 1.05;
       letter-spacing: -0.02em;
       color: #fff;
@@ -179,9 +181,10 @@
     }
 
     .hero-sub {
+      text-align: center;
       font-size: 1.1rem;
       color: var(--muted);
-      max-width: 540px;
+      max-width: 800px;
       margin-bottom: 2.5rem;
       font-weight: 300;
       opacity: 0;
@@ -194,6 +197,7 @@
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
+      justify-content: center; 
       opacity: 0;
       animation: fadeUp 0.7s ease forwards 0.65s;
     }
@@ -208,18 +212,6 @@
       font-weight: 500;
       text-decoration: none;
       transition: all 0.2s;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #6d28d9);
-      color: #fff;
-      border: none;
-      box-shadow: 0 0 24px rgba(124,111,254,0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 36px rgba(124,111,254,0.5);
     }
 
     .btn-ghost {
@@ -272,9 +264,9 @@
     }
 
     h2 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'IBM Plex Sans', sans-serif;
       font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 700;
+      font-weight: 500;
       color: #fff;
       margin-bottom: 1rem;
       letter-spacing: -0.02em;
@@ -470,8 +462,9 @@
   </style>
 </head>
 <body>
-
-  <canvas id="starfield"></canvas>
+  <canvas id="fluid-canvas" style="position:fixed;inset:0;z-index:0;width:100%;height:100%;"></canvas>
+  <canvas id="starfield" style="position:fixed;inset:0;z-index:1;pointer-events:none;"></canvas>
+  
   <div class="nebula nebula-galaxy"></div>
 
   <nav>
@@ -489,7 +482,7 @@
       Software Engineer specializing in C# · .NET and CAD systems for civil infrastructure.
     </p>
     <div class="hero-cta">
-      <a href="#projects" class="btn btn-primary">View my work</a>
+      <a href="#projects" class="btn btn-ghost">View my work</a>
       <a href="#contact" class="btn btn-ghost">Get in touch</a>
     </div>
   </section>
@@ -539,97 +532,156 @@
   </footer>
 
   <script>
-    const canvas = document.getElementById('starfield');
-    const ctx = canvas.getContext('2d');
-    let W, H, stars = [];
-    const COUNT = 70;
+    (function() {
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let W, H, stars = [];
+      const COUNT = 70;
 
-    const COLORS = [
-      'rgba(255,255,255,',
-      'rgba(255,255,255,',
-      'rgba(255,255,255,',
-      'rgba(255,255,255,',
-      'rgba(255,255,255,',
-      'rgba(200,220,255,',
-    ];
+      const COLORS = [
+        'rgba(255,255,255,',
+        'rgba(255,255,255,',
+        'rgba(255,255,255,',
+        'rgba(255,255,255,',
+        'rgba(255,255,255,',
+        'rgba(200,220,255,',
+      ];
 
-    function rnd(a, b) { return a + Math.random() * (b - a); }
+      function rnd(a, b) { return a + Math.random() * (b - a); }
 
-    function makeStar() {
-      const roll = Math.random();
-      const size = roll < 0.65 ? rnd(0.3, 0.6) : rnd(0.8, 1.2);                
-      return {
-        x: rnd(0, W), y: rnd(0, H),
-        size,
-        vx: 0, vy: 0,
-        speed: size * rnd(0.012, 0.04),
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        alpha: rnd(0.35, 1.0),
-        twinkleSpeed: rnd(0.004, 0.018),
-        twinklePhase: rnd(0, Math.PI * 2),
-      };
-    }
+      function makeStar() {
+        const roll = Math.random();
+        const size = roll < 0.65 ? rnd(0.3, 0.6) : rnd(0.8, 1.2);                
+        return {
+          x: rnd(0, W), y: rnd(0, H),
+          size,
+          vx: 0, vy: 0,
+          speed: size * rnd(0.012, 0.04),
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          alpha: rnd(0.35, 1.0),
+          twinkleSpeed: rnd(0.004, 0.018),
+          twinklePhase: rnd(0, Math.PI * 2),
+        };
+      }
 
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
+      function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
 
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < COUNT; i++) stars.push(makeStar());
-    }
+      function initStars() {
+        stars = [];
+        for (let i = 0; i < COUNT; i++) stars.push(makeStar());
+      }
 
-    let t = 0;
+      let t = 0;
+      let shootingStars = [];
+      let nextShoot = rnd(2, 5);
 
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      t += 0.016;
+      function makeShootingStar() {
+        const angle = rnd(20, 70) * Math.PI / 180;
+        const startX = rnd(0, W * 0.8);
+        const startY = rnd(0, H * 0.4);
+        const speed = rnd(8, 16);
+        return {
+          x: startX,
+          y: startY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          length: rnd(80, 160),
+          alpha: 1,
+          width: rnd(0.8, 1.5),
+          trail: [],
+        };
+      }
 
-      for (const s of stars) {
-        // Brownian motion — random impulse each frame, damped velocity
-        s.vx += rnd(-1, 1) * s.speed;
-        s.vy += rnd(-1, 1) * s.speed;
-        s.vx *= 0.94;
-        s.vy *= 0.94;
-        s.x  += s.vx;
-        s.y  += s.vy;
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
 
-        // Wrap edges
-        if (s.x < -4) s.x = W + 4;
-        if (s.x > W + 4) s.x = -4;
-        if (s.y < -4) s.y = H + 4;
-        if (s.y > H + 4) s.y = -4;
+        // Spawn shooting stars
+        nextShoot -= 0.016;
+        if (nextShoot <= 0) {
+          shootingStars.push(makeShootingStar());
+          nextShoot = rnd(3, 8);
+        }
 
-        // Twinkle
-        const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed * 60 + s.twinklePhase);
-        const a = s.alpha * (0.6 + 0.4 * twinkle);
+        // Draw shooting stars
+        shootingStars = shootingStars.filter(s => s.alpha > 0.02);
+        for (const s of shootingStars) {
+          s.trail.push({ x: s.x, y: s.y });
+          if (s.trail.length > 12) s.trail.shift();
 
-        // Glow for larger stars
-        if (s.size > 1.6) {
-          const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.size * 3);
-          g.addColorStop(0, s.color + a + ')');
-          g.addColorStop(1, s.color + '0)');
+          s.x += s.vx;
+          s.y += s.vy;
+          s.alpha -= 0.018;
+
+          if (s.trail.length > 1) {
+            const grad = ctx.createLinearGradient(
+              s.trail[0].x, s.trail[0].y, s.x, s.y
+            );
+            grad.addColorStop(0, `rgba(255,255,255,0)`);
+            grad.addColorStop(0.6, `rgba(200,220,255,${s.alpha * 0.4})`);
+            grad.addColorStop(1, `rgba(255,255,255,${s.alpha})`);
+
+            ctx.beginPath();
+            ctx.moveTo(s.trail[0].x, s.trail[0].y);
+            for (const p of s.trail) ctx.lineTo(p.x, p.y);
+            ctx.lineTo(s.x, s.y);
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = s.width;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+          }
+        }
+
+        t += 0.016;
+
+        for (const s of stars) {
+          // Brownian motion — random impulse each frame, damped velocity
+          s.vx += rnd(-1, 1) * s.speed;
+          s.vy += rnd(-1, 1) * s.speed;
+          s.vx *= 0.94;
+          s.vy *= 0.94;
+          s.x  += s.vx;
+          s.y  += s.vy;
+
+          // Wrap edges
+          if (s.x < -4) s.x = W + 4;
+          if (s.x > W + 4) s.x = -4;
+          if (s.y < -4) s.y = H + 4;
+          if (s.y > H + 4) s.y = -4;
+
+          // Twinkle
+          const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed * 60 + s.twinklePhase);
+          const a = s.alpha * (0.6 + 0.4 * twinkle);
+
+          // Glow for larger stars
+          if (s.size > 1.6) {
+            const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.size * 3);
+            g.addColorStop(0, s.color + a + ')');
+            g.addColorStop(1, s.color + '0)');
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.size * 3, 0, Math.PI * 2);
+            ctx.fillStyle = g;
+            ctx.fill();
+          }
+
+          // Core dot
           ctx.beginPath();
-          ctx.arc(s.x, s.y, s.size * 3, 0, Math.PI * 2);
-          ctx.fillStyle = g;
+          ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+          ctx.fillStyle = s.color + a + ')';
           ctx.fill();
         }
 
-        // Core dot
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fillStyle = s.color + a + ')';
-        ctx.fill();
+        requestAnimationFrame(draw);
       }
 
-      requestAnimationFrame(draw);
-    }
-
-    window.addEventListener('resize', () => { resize(); initStars(); });
-    resize();
-    initStars();
-    draw();
+      window.addEventListener('resize', () => { resize(); initStars(); });
+      resize();
+      initStars();
+      draw();
+    })();
   </script>
+  <script src="flued.js"></script>
 </body>
 </html>
