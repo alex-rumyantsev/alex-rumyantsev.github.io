@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alexander Rumyantsev — Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #000000;
+      --bg2:     rgba(255,255,255,0.04);
+      --bg3:     rgba(255,255,255,0.07);
+      --accent:  #7c6ffe;
+      --accent2: #a78bfa;
+      --teal:    #2dd4bf;
+      --pink:    #f472b6;
+      --text:    #e2e8f0;
+      --muted:   #64748b;
+      --border:  rgba(255,255,255,0.07);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.18;
+    }
+
+    .nebula-galaxy {
+      width: 800px;
+      height: 1000px;
+      background: radial-gradient(circle at center,
+        rgba(255,255,255,0.98) 0%,
+        rgba(180,210,255,0.75) 12%,
+        rgba(100,160,255,0.35) 30%,
+        transparent 70%
+      );
+      bottom: -400px;
+      right: -600px;
+      opacity: 1;
+      filter: blur(14px);
+      animation: drift2 35s ease-in-out infinite alternate;
+    }
+
+    .nebula-galaxy::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      border-radius: 40% 60% 55% 45% / 50% 45% 55% 50%;
+      background: radial-gradient(ellipse at 45% 50%,
+        rgba(100,160,255,0.55) 0%,
+        rgba(60,120,255,0.3) 40%,
+        transparent 70%
+      );
+      filter: blur(35px);
+      animation: volumetric1 14s ease-in-out infinite alternate;
+    }
+
+    .nebula-galaxy::after {
+      content: '';
+      position: absolute;
+      inset: -75%;
+      border-radius: 55% 45% 40% 60% / 45% 55% 50% 50%;
+      background: radial-gradient(ellipse at 55% 45%,
+        rgba(80,140,255,0.45) 0%,
+        rgba(40,100,255,0.22) 50%,
+        transparent 72%
+      );
+      filter: blur(50px);
+      animation: volumetric2 20s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes drift1 {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(80px,60px) scale(1.15); }
+    }
+    @keyframes drift2 {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(-60px,-80px) scale(1.1); }
+    }
+    @keyframes drift3 {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(40px,-50px) scale(0.9); }
+    }
+    @keyframes volumetric1 {
+      0%   { transform: scale(1)    rotate(0deg)   translate(0px,   0px);  opacity: 0.35; border-radius: 40% 60% 55% 45% / 50% 45% 55% 50%; }
+      33%  { transform: scale(1.18) rotate(6deg)   translate(14px, -10px); opacity: 0.85; border-radius: 55% 45% 42% 58% / 48% 54% 46% 52%; }
+      66%  { transform: scale(0.92) rotate(-5deg)  translate(-9px,  14px); opacity: 0.6;  border-radius: 48% 52% 60% 40% / 55% 42% 58% 45%; }
+      100% { transform: scale(1.12) rotate(8deg)   translate(16px,  -6px); opacity: 0.75; border-radius: 52% 48% 44% 56% / 46% 56% 44% 54%; }
+    }
+    @keyframes volumetric2 {
+      0%   { transform: scale(1)    rotate(0deg)   translate(0px,   0px);  opacity: 0.3;  border-radius: 55% 45% 40% 60% / 45% 55% 50% 50%; }
+      33%  { transform: scale(1.22) rotate(-8deg)  translate(-14px,  8px); opacity: 0.8;  border-radius: 42% 58% 52% 48% / 53% 47% 56% 44%; }
+      66%  { transform: scale(0.9)  rotate(5deg)   translate(10px, -13px); opacity: 0.55; border-radius: 58% 42% 48% 52% / 48% 52% 42% 58%; }
+      100% { transform: scale(1.15) rotate(-10deg) translate(-7px,  10px); opacity: 0.7;  border-radius: 46% 54% 56% 44% / 52% 48% 54% 46%; }
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(4,5,15,0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: var(--accent2);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 8rem;
+    }
+
+    h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 1000;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.35s;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    .hero-sub strong { color: var(--text); font-weight: 500; }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.65s;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.72rem 1.5rem;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #6d28d9);
+      color: #fff;
+      border: none;
+      box-shadow: 0 0 24px rgba(124,111,254,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 36px rgba(124,111,254,0.5);
+    }
+
+    .btn-ghost {
+      background: var(--bg2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(124,111,254,0.4);
+      color: var(--accent2);
+      transform: translateY(-2px);
+    }
+
+    .hero-location {
+      margin-top: 4rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.8s;
+    }
+
+    .loc-line {
+      width: 40px; height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    .sec-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sec-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .glass:hover {
+      border-color: rgba(124,111,254,0.2);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .about-text { color: var(--muted); font-weight: 300; line-height: 1.85; }
+    .about-text p + p { margin-top: 1rem; }
+    .about-text strong { color: var(--text); font-weight: 500; }
+
+    .about-stats { display: flex; flex-direction: column; gap: 1rem; }
+
+    .stat-card {
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent2), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      min-width: 52px;
+    }
+
+    .stat-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .stat-desc strong { color: var(--text); display: block; font-size: 14px; }
+
+    .tag:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    .exp-item {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 2rem;
+      position: relative;
+    }
+
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: 129px;
+      top: 8px; bottom: -2.5rem;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .exp-item:last-child::before { display: none; }
+
+    .exp-dates {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      padding-top: 4px;
+      text-align: right;
+    }
+
+    .exp-dot {
+      position: absolute;
+      left: 122px; top: 4px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent2), var(--accent));
+      box-shadow: 0 0 12px rgba(167,139,250,0.6);
+    }
+
+    .exp-body { padding-left: 1.5rem; }
+
+    .exp-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .exp-company { font-size: 13px; color: var(--teal); margin-bottom: 0.75rem; font-weight: 500; }
+
+    .exp-desc { color: var(--muted); font-size: 14px; font-weight: 300; line-height: 1.75; }
+
+    .exp-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75rem; }
+
+    .projects-placeholder {
+      margin-top: 2.5rem;
+      padding: 3.5rem;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed rgba(124,111,254,0.2);
+      border-radius: 12px;
+      background: rgba(124,111,254,0.03);
+    }
+
+    .projects-placeholder span {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-inner {
+      margin-top: 2.5rem;
+      padding: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-text h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .contact-text p { color: var(--muted); font-size: 14px; font-weight: 300; line-height: 1.7; }
+
+    .contact-links { display: flex; flex-direction: column; gap: 0.7rem; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-link:hover { color: var(--accent2); }
+
+    .contact-link-icon {
+      width: 30px; height: 30px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.2rem; }
+      .exp-item { grid-template-columns: 1fr; }
+      .exp-item::before { display: none; }
+      .exp-dot { display: none; }
+      .exp-dates { text-align: left; }
+      .exp-body { padding-left: 0; }
+      .contact-inner { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+  <div class="nebula nebula-galaxy"></div>
+
+  <nav>
+    <div class="nav-logo">ar.github.io</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section id="hero">
+    <h1>ALEXANDER RUMYANTSEV</h1>
+    <p class="hero-sub">
+      Software Engineer specializing in C# · .NET and CAD systems for civil infrastructure.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View my work</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="sec-label">· About</div>
+    <h2>FOR THE REAL WORLD</h2>
+    <div class="about-text">
+      <p>I build CAD plugins and automation tools for infrastructure 
+        engineering — working at the intersection of software development 
+        and civil design.
+      </p>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="sec-label">· Projects</div>
+    <h2>OPEN SOURCE</h2>
+    <div class="projects-placeholder">
+      <span>Coming soon</span>
+      Projects and open source contributions will appear here.
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="sec-label">· Contact</div>
+    <div class="contact-inner glass">
+      <div class="contact-links">
+        <a href="mailto:rumyantsev19am@gmail.com" class="contact-link">
+          <div class="contact-link-icon">✉</div>
+          rumyantsev19am@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/alexander-rumyantsev-5355733b7" target="_blank" class="contact-link">
+          <div class="contact-link-icon">in</div>
+          linkedin.com/in/alexander-rumyantsev
+        </a>
+        <a href="https://github.com/alex-rumyantsev" target="_blank" class="contact-link">
+          <div class="contact-link-icon">gh</div>
+          github.com/alex-rumyantsev
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Alexander Rumyantsev · Built with GitHub Pages · MIT License</span>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let W, H, stars = [];
+    const COUNT = 70;
+
+    const COLORS = [
+      'rgba(255,255,255,',
+      'rgba(255,255,255,',
+      'rgba(255,255,255,',
+      'rgba(255,255,255,',
+      'rgba(255,255,255,',
+      'rgba(200,220,255,',
+    ];
+
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+
+    function makeStar() {
+      const roll = Math.random();
+      const size = roll < 0.65 ? rnd(0.3, 0.6) : rnd(0.8, 1.2);                
+      return {
+        x: rnd(0, W), y: rnd(0, H),
+        size,
+        vx: 0, vy: 0,
+        speed: size * rnd(0.012, 0.04),
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        alpha: rnd(0.35, 1.0),
+        twinkleSpeed: rnd(0.004, 0.018),
+        twinklePhase: rnd(0, Math.PI * 2),
+      };
+    }
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < COUNT; i++) stars.push(makeStar());
+    }
+
+    let t = 0;
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      t += 0.016;
+
+      for (const s of stars) {
+        // Brownian motion — random impulse each frame, damped velocity
+        s.vx += rnd(-1, 1) * s.speed;
+        s.vy += rnd(-1, 1) * s.speed;
+        s.vx *= 0.94;
+        s.vy *= 0.94;
+        s.x  += s.vx;
+        s.y  += s.vy;
+
+        // Wrap edges
+        if (s.x < -4) s.x = W + 4;
+        if (s.x > W + 4) s.x = -4;
+        if (s.y < -4) s.y = H + 4;
+        if (s.y > H + 4) s.y = -4;
+
+        // Twinkle
+        const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed * 60 + s.twinklePhase);
+        const a = s.alpha * (0.6 + 0.4 * twinkle);
+
+        // Glow for larger stars
+        if (s.size > 1.6) {
+          const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.size * 3);
+          g.addColorStop(0, s.color + a + ')');
+          g.addColorStop(1, s.color + '0)');
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size * 3, 0, Math.PI * 2);
+          ctx.fillStyle = g;
+          ctx.fill();
+        }
+
+        // Core dot
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fillStyle = s.color + a + ')';
+        ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize();
+    initStars();
+    draw();
+  </script>
+</body>
+</html>
