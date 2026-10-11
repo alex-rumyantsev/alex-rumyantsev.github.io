@@ -1,1 +1,19 @@
-﻿
+﻿/* Design tokens: colors */
+:root {
+  --color-bg: #ffffff;
+  --color-text: #000000;
+}
+
+/* Dark theme: follows the system setting, redefines the same tokens */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #000000;
+    --color-text: #ffffff;
+  }
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
