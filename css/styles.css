@@ -24,6 +24,8 @@ img {
   --color-text: #000000;
   --color-text-on-video: #ffffffde;
   --color-subtext-on-video: #ffffff9f;
+  --color-card-bg: rgba(0, 0, 0, 0.04);
+  --color-card-border: rgba(0, 0, 0, 0.00);
   --font-body: system-ui, sans-serif;
 }
 
@@ -32,6 +34,8 @@ img {
   :root {
     --color-bg: #000000;
     --color-text: #ffffff;
+    --color-card-bg: rgba(255, 255, 255, 0.10);
+    --color-card-border: rgba(255, 255, 255, 0.00);
   }
 }
 
@@ -155,6 +159,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid var(--color-card-border);
+  border-radius: 1rem;
+  background-color: var(--color-card-bg);
 }
 
 .project-card__tags {
