@@ -1,7 +1,28 @@
-﻿/* Design tokens: colors */
+﻿/* Reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+/* Tokens */
+
 :root {
   --color-bg: #ffffff;
   --color-text: #000000;
+  --font-body: system-ui, sans-serif;
 }
 
 /* Dark theme: follows the system setting, redefines the same tokens */
@@ -12,8 +33,65 @@
   }
 }
 
-/* Base styles */
+
+/* Base */
+
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+
+/* Intro */
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  max-width: 60rem;
+  margin-inline: auto;
+  padding: 3rem 1.5rem;
+}
+
+.intro__photo {
+  width: 10rem;
+  border-radius: 2rem;
+}
+
+/* Intro text */
+.intro__text h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.intro__text h1 span {
+  display: block;
+}
+
+.intro__text p {
+  margin-top: 0.75rem;
+  font-size: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .intro {
+    flex-direction: row;
+  }
+
+  .intro__text {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .intro__photo {
+    width: 15rem;
+    border-radius: 3rem;
+  }
 }
