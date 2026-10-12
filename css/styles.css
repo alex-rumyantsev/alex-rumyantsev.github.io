@@ -51,6 +51,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+  width: 100%;
   max-width: 60rem;
   margin-inline: auto;
   padding: 3rem 1.5rem;
@@ -61,9 +62,16 @@ body {
   border-radius: 2rem;
 }
 
+.intro__text {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
 /* Intro text */
 .intro__text h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(1.5rem, 6vw, 4rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -75,7 +83,7 @@ body {
 
 .intro__text p {
   margin-top: 0.75rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 @media (min-width: 640px) {
@@ -83,15 +91,15 @@ body {
     flex-direction: row;
   }
 
+  .intro__photo {
+    width: 12rem;
+    border-radius: 2.5rem;
+  }
+
   .intro__text {
     align-self: stretch;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-
-  .intro__photo {
-    width: 15rem;
-    border-radius: 3rem;
   }
 }
