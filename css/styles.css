@@ -200,6 +200,8 @@ footer {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.5rem;
+  padding: 0;
+  list-style: none;
 }
 
 .footer__contacts a {

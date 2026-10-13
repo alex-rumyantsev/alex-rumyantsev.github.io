@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <title>Alexander Rumyantsev</title>
+    <title data-i18n="meta.title">Alexander Rumyantsev</title>
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -31,25 +31,26 @@
           <img
             class="intro__photo"
             src="assets/profile.png"
-            alt="Portrait of Alexander Rumyantsev"
+            alt="Alexander Rumyantsev"
+            data-i18n-alt="intro.photoAlt"
             width="1024"
             height="1172"
           />
           <div class="intro__text">
             <h1>
-              <span>Alexander</span>
-              <span>Rumyantsev</span>
+              <span data-i18n="intro.firstName">Alexander</span>
+              <span data-i18n="intro.lastName">Rumyantsev</span>
             </h1>
             <p>
-              Software Engineer focused on building robust, efficient, and scalable software solutions.<br> 
-              I turn complex technical challenges into clean, reliable, and maintainable code.
+              <span data-i18n="intro.summary1">Software Engineer focused on building robust, efficient, and scalable software solutions.</span><br />
+              <span data-i18n="intro.summary2">I turn complex technical challenges into clean, reliable, and maintainable code.</span>
             </p>
           </div>
         </section>
       </div>
 
       <section id="projects" class="projects">
-        <h2>Projects</h2>
+        <h2 data-i18n="projects.heading">Projects</h2>
 
         <div class="projects__grid">
           <!-- Project card: copy this whole block to add a project -->
@@ -74,7 +75,70 @@
     </main>
 
     <footer>
-      <!-- Footer -->
+      <!-- Contacts -->
+      <div class="footer__contacts">
+        <a href="https://x.com/AlexanderRumv" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new window)" data-i18n-aria-label="footer.xLabel">
+          <svg width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false">
+            <use href="assets/icons.svg#x"></use>
+          </svg>
+        </a>
+        <a href="https://github.com/alex-rumyantsev" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new window)" data-i18n-aria-label="footer.githubLabel">
+          <svg width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false">
+            <use href="assets/icons.svg#github"></use>
+          </svg>
+        </a>
+        <a href="mailto:alexander.r.can@gmail.com" aria-label="Email" data-i18n-aria-label="footer.emailLabel">
+          <svg width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false">
+            <use href="assets/icons.svg#gmail"></use>
+          </svg>
+        </a>
+        <!-- <a href="https://linkedin.com/in/YOUR_USERNAME">LinkedIn</a> -->
+      </div>
+
+      <!-- Language button -->
+      <div class="footer__language">
+        <button type="button" class="lang-button" aria-label="Change language" aria-haspopup="dialog">
+          <svg class="lang-button__icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.5"/>
+            <ellipse cx="8" cy="8" rx="2.75" ry="6.25" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M2 8h12" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <span class="lang-button__name">English</span>
+          <span class="lang-button__region">United States</span>
+        </button>
+      </div>
+
+      <!-- Language dialog -->
+      <dialog id="language-dialog" class="language-dialog" aria-label="Language">
+        <input
+          type="search"
+          class="language-dialog__search"
+          placeholder="Search languages"
+          aria-label="Search languages"
+        />
+        <ul class="language-dialog__list">
+          <li>
+            <button type="button" class="language-option" data-language="en" data-search="English United States" lang="en">
+              <span class="language-option__name">English</span>
+              <span class="language-option__region">United States</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="language-option" data-language="ru" data-search="Russian Russia" lang="ru">
+              <span class="language-option__name">Русский</span>
+              <span class="language-option__region">Россия</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="language-option" data-language="zh" data-search="Chinese Simplified China" lang="zh-Hans">
+              <span class="language-option__name">简体中文</span>
+              <span class="language-option__region">中国</span>
+            </button>
+          </li>
+        </ul>
+      </dialog>
     </footer>
+
+    <script type="module" src="js/language-dialog.js"></script>
   </body>
 </html>
