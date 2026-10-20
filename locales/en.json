@@ -8,5 +8,7 @@
   "projects.heading": "Projects",
   "footer.xLabel": "X (opens in a new window)",
   "footer.githubLabel": "GitHub (opens in a new window)",
-  "footer.emailLabel": "Email"
+  "footer.emailLabel": "Email",
+  "search.placeholder": "Search",
+  "search.label": "Search"
 }

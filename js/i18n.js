@@ -59,6 +59,11 @@ function applyTranslations(translations) {
       dataKey: 'i18nAriaLabel',
       apply: (element, text) => element.setAttribute('aria-label', text),
     },
+    {
+      selector: '[data-i18n-placeholder]',
+      dataKey: 'i18nPlaceholder',
+      apply: (element, text) => element.setAttribute('placeholder', text),
+    },
   ];
 
   for (const { selector, dataKey, apply } of targets) {

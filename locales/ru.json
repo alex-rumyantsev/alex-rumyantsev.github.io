@@ -8,5 +8,7 @@
   "projects.heading": "Проекты",
   "footer.xLabel": "X (откроется в новом окне)",
   "footer.githubLabel": "GitHub (откроется в новом окне)",
-  "footer.emailLabel": "Электронная почта"
+  "footer.emailLabel": "Электронная почта",
+  "search.placeholder": "Поиск",
+  "search.label": "Поиск"
 }

@@ -8,5 +8,7 @@
   "projects.heading": "项目",
   "footer.xLabel": "X（在新窗口中打开）",
   "footer.githubLabel": "GitHub（在新窗口中打开）",
-  "footer.emailLabel": "电子邮件"
+  "footer.emailLabel": "电子邮件",
+  "search.placeholder": "搜索",
+  "search.label": "搜索"
 }
