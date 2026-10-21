@@ -4,6 +4,7 @@
  */
 
 const API_URL = 'https://api.github.com/users/alex-rumyantsev/repos?per_page=100';
+const PROJECT_TOPIC = 'portfolio';
 
 let repositories = [];
 
@@ -73,7 +74,10 @@ async function init() {
     if (!response.ok) {
       throw new Error(`Cannot load repositories (HTTP ${response.status})`);
     }
-    repositories = await response.json();
+    const allRepositories = await response.json();
+    repositories = allRepositories.filter((repository) =>
+      repository.topics?.includes(PROJECT_TOPIC),
+    ); 
   } catch (error) {
     // The placeholder card stays as the fallback.
     console.error(error);
