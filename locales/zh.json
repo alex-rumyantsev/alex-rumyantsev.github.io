@@ -1,0 +1,14 @@
+﻿{
+  "meta.title": "Alexander Rumyantsev",
+  "intro.firstName": "Alexander",
+  "intro.lastName": "Rumyantsev",
+  "intro.summary1": "专注于构建稳健、高效且可扩展软件解决方案的软件工程师。",
+  "intro.summary2": "我将复杂的技术挑战转化为简洁、可靠且易于维护的代码。",
+  "intro.photoAlt": "Alexander Rumyantsev",
+  "projects.heading": "项目",
+  "footer.xLabel": "X（在新窗口中打开）",
+  "footer.githubLabel": "GitHub（在新窗口中打开）",
+  "footer.emailLabel": "电子邮件",
+  "search.placeholder": "搜索",
+  "search.label": "搜索"
+}

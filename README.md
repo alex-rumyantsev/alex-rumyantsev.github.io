@@ -1,2 +1,9 @@
 # alex-rumyantsev.github.io
-Personal portfolio website — Software Engineer
+
+Personal portfolio website..
+
+**Live site:** https://alex-rumyantsev.github.io
+
+## License
+
+Released under the [MIT License](LICENSE).
