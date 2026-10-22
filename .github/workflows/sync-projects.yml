@@ -39,6 +39,8 @@ jobs:
                 )
               } ]' repos.json > data/projects.json
 
+                jq '[ .[] | { name, private, topics } ]' repos.json
+
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
