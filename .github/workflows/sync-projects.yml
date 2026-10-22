@@ -1,0 +1,48 @@
+﻿name: Sync projects
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch repositories
+        env:
+          GH_TOKEN: ${{ secrets.PORTFOLIO_SYNC_TOKEN }}
+        run: |
+          mkdir -p data
+          curl --fail --silent --show-error \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github+json" \
+            --output repos.json \
+            "https://api.github.com/user/repos?per_page=100"
+          jq '[ .[]
+            | select(.topics | index("portfolio"))
+            | {
+                name,
+                description,
+                language,
+                pushed_at,
+                url: (
+                  if .private
+                  then (if (.homepage // "") != "" then .homepage else null end)
+                  else .html_url
+                  end
+                )
+              } ]' repos.json > data/projects.json
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/projects.json
+          git diff --staged --quiet || git commit -m "chore: update projects data"
+          git push
