@@ -1,4 +1,4 @@
-﻿name: Sync projects
+﻿name: sync projects
 
 on:
   schedule:
