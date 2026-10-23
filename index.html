@@ -67,18 +67,35 @@
               </button>
               <ul id="filter-menu" class="projects__filter-menu" hidden></ul>
             </div>
-            <div class="projects__view">
-              <button type="button" class="icon-button" data-action="view" aria-expanded="false" aria-controls="view-menu" aria-label="Change view" data-i18n-aria-label="projects.viewLabel">
-                <svg width="16" height="16" aria-hidden="true" focusable="false">
-                  <use href="assets/icons.svg#layout-grid"></use>
-                </svg>
-              </button>
-              <ul id="view-menu" class="projects__view-menu" hidden>
-                <li><button type="button" class="view-option" data-view="tiles" aria-pressed="true" data-i18n="projects.viewTiles">Tiles</button></li>
-                <li><button type="button" class="view-option" data-view="list" aria-pressed="false" data-i18n="projects.viewList">List</button></li>
-                <li><button type="button" class="view-option" data-view="main" aria-pressed="false" data-i18n="projects.viewMain">Main preview</button></li>
-              </ul>
-            </div>
+          <div class="projects__views">
+            <button type="button" class="icon-button" data-action="view" aria-expanded="false" aria-controls="view-menu" aria-label="Change view" data-i18n-aria-label="projects.viewLabel">
+              <svg width="16" height="16" aria-hidden="true" focusable="false">
+                <use href="assets/icons.svg#tiles"></use>
+              </svg>
+            </button>
+            <ul id="view-menu" class="projects__view-menu" hidden>
+              <li>
+                <button type="button" class="icon-button" data-view="tiles" aria-pressed="true" aria-label="Tiles" data-i18n-aria-label="projects.viewTiles">
+                  <svg width="16" height="16" aria-hidden="true" focusable="false">
+                    <use href="assets/icons.svg#tiles"></use>
+                  </svg>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="icon-button" data-view="list" aria-pressed="false" aria-label="List" data-i18n-aria-label="projects.viewList">
+                  <svg width="16" height="16" aria-hidden="true" focusable="false">
+                    <use href="assets/icons.svg#list"></use>
+                  </svg>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="icon-button" data-view="main" aria-pressed="false" aria-label="Main preview" data-i18n-aria-label="projects.viewMain">
+                  <svg width="16" height="16" aria-hidden="true" focusable="false">
+                    <use href="assets/icons.svg#main"></use>
+                  </svg>
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
 

@@ -190,11 +190,13 @@ function initFilter() {
 
 /** Opens the view menu and switches the grid between the available views. */
 function initViews() {
-  const wrapper = document.querySelector('.projects__view');
+  const wrapper = document.querySelector('.projects__views');
   const button = document.querySelector('[data-action="view"]');
   const menu = document.getElementById('view-menu');
   const grid = document.querySelector('.projects__grid');
   if (!wrapper || !button || !menu || !grid) return;
+
+  const buttonIcon = button.querySelector('use');
 
   function setMenuOpen(isOpen) {
     menu.hidden = !isOpen;
@@ -202,13 +204,15 @@ function initViews() {
   }
 
   menu.addEventListener('click', (event) => {
-    const option = event.target.closest('.view-option');
+    const option = event.target.closest('[data-view]');
     if (!option) return;
 
     grid.dataset.view = option.dataset.view;
-    menu.querySelectorAll('.view-option').forEach((item) => {
+    menu.querySelectorAll('[data-view]').forEach((item) => {
       item.setAttribute('aria-pressed', String(item === option));
     });
+    // The main button shows the icon of the current view.
+    buttonIcon.setAttribute('href', `assets/icons.svg#${option.dataset.view}`);
     setMenuOpen(false);
   });
 
