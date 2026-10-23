@@ -34,11 +34,11 @@ jobs:
             status=$(curl --silent --location \
               --header "Authorization: Bearer $GH_TOKEN" \
               --header "Accept: application/vnd.github.raw+json" \
-              --output "data/previews/${name}.png" \
+              --output "data/previews/${name}.svg" \
               --write-out '%{http_code}' \
-              "https://api.github.com/repos/${full_name}/contents/preview.png")
+              "https://api.github.com/repos/${full_name}/contents/preview.svg")
             if [ "$status" != "200" ]; then
-              rm -f "data/previews/${name}.png"
+              rm -f "data/previews/${name}.svg"
             fi
           done
 
@@ -60,8 +60,8 @@ jobs:
                   end
                 ),
                 preview: (
-                  if ($previews[0] | index($name + ".png")) != null
-                  then "data/previews/" + $name + ".png"
+                  if ($previews[0] | index($name + ".svg")) != null
+                  then "data/previews/" + $name + ".svg"
                   else null
                   end
                 )
