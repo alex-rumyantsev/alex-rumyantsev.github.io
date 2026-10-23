@@ -1,4 +1,4 @@
-﻿name: Sync projects
+﻿name: sync projects
 
 on:
   schedule:
@@ -38,6 +38,8 @@ jobs:
                   end
                 )
               } ]' repos.json > data/projects.json
+
+                jq '[ .[] | { name, private, topics } ]' repos.json
 
       - name: Commit changes
         run: |
