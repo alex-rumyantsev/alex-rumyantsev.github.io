@@ -145,7 +145,7 @@ body {
   }
 }
 
-/* Projects header */
+/* Projects */
 
 .projects__header {
   display: flex;
@@ -159,21 +159,28 @@ body {
 .projects__header h2 {
   margin-bottom: 0;
   font-size: 2rem;
+  flex: 0 0 auto;
 }
 
 .projects__tools {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .projects__search {
-  width: min(16rem, 50vw);
+  width: 16rem;
+  min-width: 0;
   min-height: 2.5rem;
   padding: 0.5rem 1rem;
   border: 1px solid var(--color-search-border);
   border-radius: 999px;
   background-color: var(--color-search-bg);
   color: var(--color-text);
+  flex: 0 1 16rem;
 }
 
 .projects__search[hidden] {
@@ -183,6 +190,87 @@ body {
 .projects__search:focus-visible {
   outline: 0px solid var(--color-search-bg);
   outline-offset: 0px;
+}
+
+/* Keep the action buttons together. */
+.projects__tools .icon-button {
+  flex: 0 0 auto;
+}
+
+.projects__filter {
+  position: relative;
+}
+
+.projects__filter-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 1;
+  min-width: 12rem;
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+  border: 1px solid var(--color-card-border);
+  border-radius: 1.5rem;
+  background-color: var(--color-bg);
+  background-image: linear-gradient(var(--color-card-bg), var(--color-card-bg));
+}
+
+.filter-option {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 1rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.filter-option:hover,
+.filter-option:focus-visible,
+.filter-option[aria-pressed="true"] {
+  background-color: var(--color-button-bg);
+}
+
+.projects__view {
+  position: relative;
+}
+
+.projects__view-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 1;
+  min-width: 12rem;
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+  border: 1px solid var(--color-card-border);
+  border-radius: 1.5rem;
+  background-color: var(--color-bg);
+  background-image: linear-gradient(var(--color-card-bg), var(--color-card-bg));
+}
+
+.view-option {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 1rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.view-option:hover,
+.view-option:focus-visible,
+.view-option[aria-pressed="true"] {
+  background-color: var(--color-button-hover-bg);
 }
 
 .icon-button {
@@ -206,8 +294,6 @@ body {
 .icon-button:hover {
   background-color: var(--color-button-hover-bg);
 }
-
-/* Projects */
 
 .projects {
   max-width: 60rem;

@@ -9,6 +9,13 @@ const PLACEHOLDER_URL = 'assets/placeholder.svg';
 let repositories = [];
 let query = '';
 
+let activeLanguage = null;
+
+/** True when no language is chosen or the repository uses the chosen one. */
+function matchesLanguage(repository) {
+  return activeLanguage === null || repository.language === activeLanguage;
+}
+
 /** True when the repository name, description or language contains the typed text. */
 function matchesQuery(repository) {
   const text = [repository.name, repository.description, repository.language]
@@ -88,7 +95,7 @@ function render() {
     dateStyle: 'medium',
   });
   const cards = [...repositories]
-    .filter(matchesQuery)
+    .filter((repository) => matchesQuery(repository) && matchesLanguage(repository))
     .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
     .map((repository) => createCard(repository, dateFormat));
 
@@ -126,8 +133,99 @@ function initSearch() {
   });
 }
 
+/** Builds the language menu and filters the cards by the chosen language. */
+function initFilter() {
+  const wrapper = document.querySelector('.projects__filter');
+  const button = document.querySelector('[data-action="filter"]');
+  const menu = document.getElementById('filter-menu');
+  if (!wrapper || !button || !menu) return;
+
+  const languages = [...new Set(repositories.map((repository) => repository.language))]
+    .filter(Boolean)
+    .sort();
+  wrapper.hidden = languages.length === 0;
+
+  function setMenuOpen(isOpen) {
+    menu.hidden = !isOpen;
+    button.setAttribute('aria-expanded', String(isOpen));
+  }
+
+  menu.replaceChildren(
+    ...languages.map((language) => {
+      const listItem = document.createElement('li');
+      const option = document.createElement('button');
+      option.type = 'button';
+      option.className = 'filter-option';
+      option.dataset.language = language;
+      option.textContent = language;
+      option.setAttribute('aria-pressed', 'false');
+      listItem.append(option);
+      return listItem;
+    }),
+  );
+
+  menu.addEventListener('click', (event) => {
+    const option = event.target.closest('.filter-option');
+    if (!option) return;
+
+    // Choosing the active language again clears the filter.
+    activeLanguage = activeLanguage === option.dataset.language ? null : option.dataset.language;
+    menu.querySelectorAll('.filter-option').forEach((item) => {
+      item.setAttribute('aria-pressed', String(item.dataset.language === activeLanguage));
+    });
+    setMenuOpen(false);
+    render();
+  });
+
+  button.addEventListener('click', () => setMenuOpen(menu.hidden));
+
+  document.addEventListener('click', (event) => {
+    if (!wrapper.contains(event.target)) setMenuOpen(false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenuOpen(false);
+  });
+}
+
+/** Opens the view menu and switches the grid between the available views. */
+function initViews() {
+  const wrapper = document.querySelector('.projects__view');
+  const button = document.querySelector('[data-action="view"]');
+  const menu = document.getElementById('view-menu');
+  const grid = document.querySelector('.projects__grid');
+  if (!wrapper || !button || !menu || !grid) return;
+
+  function setMenuOpen(isOpen) {
+    menu.hidden = !isOpen;
+    button.setAttribute('aria-expanded', String(isOpen));
+  }
+
+  menu.addEventListener('click', (event) => {
+    const option = event.target.closest('.view-option');
+    if (!option) return;
+
+    grid.dataset.view = option.dataset.view;
+    menu.querySelectorAll('.view-option').forEach((item) => {
+      item.setAttribute('aria-pressed', String(item === option));
+    });
+    setMenuOpen(false);
+  });
+
+  button.addEventListener('click', () => setMenuOpen(menu.hidden));
+
+  document.addEventListener('click', (event) => {
+    if (!wrapper.contains(event.target)) setMenuOpen(false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenuOpen(false);
+  });
+}
+
 async function init() {
   initSearch();
+  initViews();
   
   // Re-render so the dates follow the selected language.
   document.addEventListener('site:language-change', render);
@@ -144,6 +242,7 @@ async function init() {
     return;
   }
 
+  initFilter();
   render();
 }
 

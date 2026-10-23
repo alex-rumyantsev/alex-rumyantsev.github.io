@@ -59,11 +59,26 @@
                 <use href="assets/icons.svg#search"></use>
               </svg>
             </button>
-            <button type="button" class="icon-button" aria-label="Filter projects" data-i18n-aria-label="projects.filterLabel">
-              <svg width="16" height="16" aria-hidden="true" focusable="false">
-                <use href="assets/icons.svg#funnel"></use>
-              </svg>
-            </button>
+            <div class="projects__filter">
+              <button type="button" class="icon-button" data-action="filter" aria-expanded="false" aria-controls="filter-menu" aria-label="Filter projects" data-i18n-aria-label="projects.filterLabel">
+                <svg width="16" height="16" aria-hidden="true" focusable="false">
+                  <use href="assets/icons.svg#funnel"></use>
+                </svg>
+              </button>
+              <ul id="filter-menu" class="projects__filter-menu" hidden></ul>
+            </div>
+            <div class="projects__view">
+              <button type="button" class="icon-button" data-action="view" aria-expanded="false" aria-controls="view-menu" aria-label="Change view" data-i18n-aria-label="projects.viewLabel">
+                <svg width="16" height="16" aria-hidden="true" focusable="false">
+                  <use href="assets/icons.svg#layout-grid"></use>
+                </svg>
+              </button>
+              <ul id="view-menu" class="projects__view-menu" hidden>
+                <li><button type="button" class="view-option" data-view="tiles" aria-pressed="true" data-i18n="projects.viewTiles">Tiles</button></li>
+                <li><button type="button" class="view-option" data-view="list" aria-pressed="false" data-i18n="projects.viewList">List</button></li>
+                <li><button type="button" class="view-option" data-view="main" aria-pressed="false" data-i18n="projects.viewMain">Main preview</button></li>
+              </ul>
+            </div>
           </div>
         </div>
 
