@@ -27,6 +27,8 @@ img {
   --color-button-hover-bg: rgba(0, 0, 0, 0.08);
   --color-text-on-video: #ffffffde;
   --color-subtext-on-video: #ffffff9f;
+  --color-search-bg: rgba(0, 0, 0, 0.08);
+  --color-search-border: rgba(0, 0, 0, 0.0);
   --color-card-bg: rgba(0, 0, 0, 0.04);
   --color-card-border: rgba(0, 0, 0, 0.00);
   --font-body: system-ui, sans-serif;
@@ -40,6 +42,8 @@ img {
     --color-button-bg: rgba(255, 255, 255, 0.0); /* alfa might be 0.10 */
     --color-button-border: rgba(255, 255, 255, 0.00);
     --color-button-hover-bg: rgba(255, 255, 255, 0.18);
+    --color-search-bg: rgba(255, 255, 255, 0.18);
+    --color-search-border: rgba(255, 255, 255, 0.00);
     --color-card-bg: rgba(255, 255, 255, 0.10);
     --color-card-border: rgba(255, 255, 255, 0.00);
   }
@@ -160,6 +164,25 @@ body {
 .projects__tools {
   display: flex;
   gap: 0.5rem;
+}
+
+.projects__search {
+  width: min(16rem, 50vw);
+  min-height: 2.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-search-border);
+  border-radius: 999px;
+  background-color: var(--color-search-bg);
+  color: var(--color-text);
+}
+
+.projects__search[hidden] {
+  display: none;
+}
+
+.projects__search:focus-visible {
+  outline: 0px solid var(--color-search-bg);
+  outline-offset: 0px;
 }
 
 .icon-button {
@@ -380,16 +403,16 @@ footer {
 .language-dialog__search {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid var(--color-button-border);
+  border: 1px solid var(--color-search-border);
   border-radius: 999px;
-  background-color: var(--color-button-hover-bg);
+  background-color: var(--color-search-bg);
   color: inherit;
   font: inherit;
 }
 
 .language-dialog__search:focus-visible,
 .language-option:focus-visible {
-  outline: 1px solid var(--color-button-border);
+  outline: 1px solid var(--color-search-border);
   outline-offset: 1px;
 }
 

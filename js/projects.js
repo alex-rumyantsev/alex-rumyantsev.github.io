@@ -7,6 +7,16 @@ const DATA_URL = 'data/projects.json';
 const PLACEHOLDER_URL = 'assets/placeholder.svg';
 
 let repositories = [];
+let query = '';
+
+/** True when the repository name, description or language contains the typed text. */
+function matchesQuery(repository) {
+  const text = [repository.name, repository.description, repository.language]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+  return text.includes(query.trim().toLowerCase());
+}
 
 /** Builds one project card from a repository object. */
 function createCard(repository, dateFormat) {
@@ -78,6 +88,7 @@ function render() {
     dateStyle: 'medium',
   });
   const cards = [...repositories]
+    .filter(matchesQuery)
     .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
     .map((repository) => createCard(repository, dateFormat));
 
@@ -85,7 +96,39 @@ function render() {
   grid.prepend(...cards);
 }
 
+/** Opens and closes the search field and filters the cards while typing. */
+function initSearch() {
+  const button = document.querySelector('[data-action="search"]');
+  const input = document.querySelector('.projects__search');
+  if (!button || !input) return;
+
+  button.addEventListener('click', () => {
+    input.hidden = !input.hidden;
+    if (input.hidden) {
+      input.value = '';
+      query = '';
+      render();
+    } else {
+      input.focus();
+    }
+  });
+
+  input.addEventListener('input', () => {
+    query = input.value;
+    render();
+  });
+
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      button.click();
+      button.focus();
+    }
+  });
+}
+
 async function init() {
+  initSearch();
+  
   // Re-render so the dates follow the selected language.
   document.addEventListener('site:language-change', render);
 
