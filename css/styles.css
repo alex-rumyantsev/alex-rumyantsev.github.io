@@ -203,13 +203,25 @@ body {
 
 .projects__grid[data-view="tiles"] .project-card[data-repository] {
   position: relative;
+  min-height: 17rem;
   padding: 0;
   overflow: hidden;
 }
 
 .projects__grid[data-view="tiles"] .project-card__preview {
+  position: absolute;
+  inset: 0;
+  height: 100%;
   border-radius: 0;
   transition: filter 0.2s ease;
+}
+
+.projects__grid[data-view="tiles"] .project-card__body p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
 }
 
 .projects__grid[data-view="tiles"] .project-card__body {
