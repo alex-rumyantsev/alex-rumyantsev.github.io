@@ -6,6 +6,8 @@
   "intro.summary2": "Я превращаю сложные технические задачи в чистый, надёжный и поддерживаемый код.",
   "intro.photoAlt": "Александр Румянцев",
   "projects.heading": "Проекты",
+  "projects.searchLabel": "Поиск по проектам",
+  "projects.filterLabel": "Фильтр проектов",
   "footer.xLabel": "X (откроется в новом окне)",
   "footer.githubLabel": "GitHub (откроется в новом окне)",
   "footer.emailLabel": "Электронная почта",

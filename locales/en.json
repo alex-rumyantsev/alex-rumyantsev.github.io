@@ -6,6 +6,8 @@
   "intro.summary2": "I turn complex technical challenges into clean, reliable, and maintainable code.",
   "intro.photoAlt": "Alexander Rumyantsev",
   "projects.heading": "Projects",
+  "projects.searchLabel": "Search projects",
+  "projects.filterLabel": "Filter projects",
   "footer.xLabel": "X (opens in a new window)",
   "footer.githubLabel": "GitHub (opens in a new window)",
   "footer.emailLabel": "Email",

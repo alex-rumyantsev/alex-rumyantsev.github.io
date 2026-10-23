@@ -139,6 +139,42 @@ body {
   }
 }
 
+/* Projects header */
+
+.projects__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.projects__header h2 {
+  margin-bottom: 0;
+}
+
+.projects__tools {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--color-button-border);
+  border-radius: 999px;
+  background: var(--color-button-bg);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
 
 /* Projects */
 
