@@ -28,6 +28,9 @@ function createCard(repository, dateFormat) {
   );
   card.append(preview);
 
+  const body = document.createElement('div');
+  body.className = 'project-card__body';
+
   const title = document.createElement('h3');
   if (repository.url) {
     const link = document.createElement('a');
@@ -39,12 +42,12 @@ function createCard(repository, dateFormat) {
   } else {
     title.textContent = repository.name;
   }
-  card.append(title);
+  body.append(title);
 
   if (repository.description) {
     const description = document.createElement('p');
     description.textContent = repository.description;
-    card.append(description);
+    body.append(description);
   }
 
   if (repository.language) {
@@ -53,15 +56,16 @@ function createCard(repository, dateFormat) {
     const tag = document.createElement('li');
     tag.textContent = repository.language;
     tags.append(tag);
-    card.append(tags);
+    body.append(tags);
   }
 
   const updated = document.createElement('time');
   updated.className = 'project-card__updated';
   updated.dateTime = repository.pushed_at;
   updated.textContent = dateFormat.format(new Date(repository.pushed_at));
-  card.append(updated);
+  body.append(updated);
 
+  card.append(body);
   return card;
 }
 
