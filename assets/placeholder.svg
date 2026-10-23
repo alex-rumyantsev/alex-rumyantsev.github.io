@@ -1,0 +1,93 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 100 100"
+     preserveAspectRatio="xMidYMid slice">
+
+  <defs>
+    <radialGradient id="mist1">
+      <stop offset="0" stop-color="#808080" stop-opacity=".55"/>
+      <stop offset=".45" stop-color="#808080" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#808080" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="mist2">
+      <stop offset="0" stop-color="#999999" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#999999" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="mist3">
+      <stop offset="0" stop-color="#707070" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#707070" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+
+    <clipPath id="frame">
+      <rect width="100" height="100"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <!-- Neutral background -->
+    <rect width="100" height="100"
+          fill="#808080" fill-opacity=".12"/>
+
+    <!-- Large ambient field -->
+    <ellipse cx="30" cy="30" rx="53" ry="48"
+             fill="url(#mist1)" filter="url(#soft)">
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="-12 -8; 18 12; -5 18; -12 -8"
+        dur="18s"
+        repeatCount="indefinite"
+        calcMode="spline"
+        keyTimes="0; .35; .7; 1"
+        keySplines=".45 0 .55 1; .45 0 .55 1; .45 0 .55 1"/>
+      <animate
+        attributeName="opacity"
+        values=".7; 1; .65; .7"
+        dur="12s"
+        repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- Opposing soft field -->
+    <ellipse cx="75" cy="72" rx="48" ry="55"
+             fill="url(#mist2)" filter="url(#soft)">
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="8 12; -15 -8; 10 -15; 8 12"
+        dur="23s"
+        repeatCount="indefinite"
+        calcMode="spline"
+        keyTimes="0; .35; .7; 1"
+        keySplines=".45 0 .55 1; .45 0 .55 1; .45 0 .55 1"/>
+      <animateTransform
+        attributeName="transform"
+        additive="sum"
+        type="scale"
+        values="1 1; 1.25 1.15; .9 1.2; 1 1"
+        dur="16s"
+        repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- Center glow -->
+    <ellipse cx="48" cy="48" rx="38" ry="34"
+             fill="url(#mist3)" filter="url(#soft)">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0 48 48; 180 48 48; 360 48 48"
+        dur="32s"
+        repeatCount="indefinite"
+        calcMode="linear"/>
+      <animate
+        attributeName="opacity"
+        values=".45; .9; .55; .45"
+        dur="14s"
+        repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+</svg>

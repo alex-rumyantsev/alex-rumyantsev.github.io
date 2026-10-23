@@ -177,6 +177,13 @@ body {
   list-style: none;
 }
 
+.project-card__preview {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
 .project-card__link {
   margin-top: auto;
   color: inherit;

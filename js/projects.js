@@ -4,6 +4,7 @@
  */
 
 const DATA_URL = 'data/projects.json';
+const PLACEHOLDER_URL = 'assets/placeholder.svg';
 
 let repositories = [];
 
@@ -12,6 +13,20 @@ function createCard(repository, dateFormat) {
   const card = document.createElement('article');
   card.className = 'project-card';
   card.dataset.repository = repository.name;
+
+  const preview = document.createElement('img');
+  preview.className = 'project-card__preview';
+  preview.src = repository.preview ?? PLACEHOLDER_URL;
+  preview.alt = '';
+  preview.loading = 'lazy';
+  preview.addEventListener(
+    'error',
+    () => {
+      preview.src = PLACEHOLDER_URL;
+    },
+    { once: true },
+  );
+  card.append(preview);
 
   const title = document.createElement('h3');
   if (repository.url) {
