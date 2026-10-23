@@ -22,8 +22,9 @@ img {
 :root {
   --color-bg: #ffffff;
   --color-text: #000000;
-  --color-button-bg: rgba(0, 0, 0, 0.04);
-  --color-button-border: rgba(0, 0, 0, 0.04);
+  --color-button-bg: rgba(0, 0, 0, 0.0); /* alfa might be 0.04 */
+  --color-button-border: rgba(0, 0, 0, 0.0); /* alfa might be 0.04 */
+  --color-button-hover-bg: rgba(0, 0, 0, 0.08);
   --color-text-on-video: #ffffffde;
   --color-subtext-on-video: #ffffff9f;
   --color-card-bg: rgba(0, 0, 0, 0.04);
@@ -36,8 +37,9 @@ img {
   :root {
     --color-bg: #000000;
     --color-text: #ffffff;
-    --color-button-bg: rgba(255, 255, 255, 0.10);
+    --color-button-bg: rgba(255, 255, 255, 0.0); /* alfa might be 0.10 */
     --color-button-border: rgba(255, 255, 255, 0.00);
+    --color-button-hover-bg: rgba(255, 255, 255, 0.18);
     --color-card-bg: rgba(255, 255, 255, 0.10);
     --color-card-border: rgba(255, 255, 255, 0.00);
   }
@@ -145,12 +147,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
 }
 
 .projects__header h2 {
   margin-bottom: 0;
+  font-size: 2rem;
 }
 
 .projects__tools {
@@ -176,17 +180,16 @@ body {
   outline-offset: 2px;
 }
 
+.icon-button:hover {
+  background-color: var(--color-button-hover-bg);
+}
+
 /* Projects */
 
 .projects {
   max-width: 60rem;
   margin-inline: auto;
   padding: 4rem 1.5rem;
-}
-
-.projects h2 {
-  margin-bottom: 2rem;
-  font-size: 2rem;
 }
 
 .projects__grid {
@@ -337,6 +340,10 @@ footer {
   outline-offset: 2px;
 }
 
+.lang-button:hover {
+  background-color: var(--color-button-hover-bg);
+}
+
 .lang-button__icon {
   flex-shrink: 0;
 }
@@ -375,7 +382,7 @@ footer {
   padding: 0.75rem 1rem;
   border: 1px solid var(--color-button-border);
   border-radius: 999px;
-  background-color: var(--color-button-bg);
+  background-color: var(--color-button-hover-bg);
   color: inherit;
   font: inherit;
 }
@@ -408,7 +415,7 @@ footer {
 
 .language-option:hover,
 .language-option:focus-visible {
-  background-color: var(--color-button-bg);
+  background-color: var(--color-button-hover-bg);
 }
 
 .language-option__region {
