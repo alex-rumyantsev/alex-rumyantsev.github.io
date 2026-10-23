@@ -3,8 +3,7 @@
  * renders them as cards before the placeholder card.
  */
 
-const API_URL = 'https://api.github.com/users/alex-rumyantsev/repos?per_page=100';
-const PROJECT_TOPIC = 'portfolio';
+const DATA_URL = 'data/projects.json';
 
 let repositories = [];
 
@@ -15,12 +14,16 @@ function createCard(repository, dateFormat) {
   card.dataset.repository = repository.name;
 
   const title = document.createElement('h3');
-  const link = document.createElement('a');
-  link.href = repository.html_url;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  link.textContent = repository.name;
-  title.append(link);
+  if (repository.url) {
+    const link = document.createElement('a');
+    link.href = repository.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = repository.name;
+    title.append(link);
+  } else {
+    title.textContent = repository.name;
+  }
   card.append(title);
 
   if (repository.description) {
@@ -68,16 +71,11 @@ async function init() {
   document.addEventListener('site:language-change', render);
 
   try {
-    const response = await fetch(API_URL, {
-      headers: { Accept: 'application/vnd.github+json' },
-    });
+    const response = await fetch(DATA_URL);
     if (!response.ok) {
-      throw new Error(`Cannot load repositories (HTTP ${response.status})`);
+      throw new Error(`Cannot load projects (HTTP ${response.status})`);
     }
-    const allRepositories = await response.json();
-    repositories = allRepositories.filter((repository) =>
-      repository.topics?.includes(PROJECT_TOPIC),
-    ); 
+    repositories = await response.json();
   } catch (error) {
     // The placeholder card stays as the fallback.
     console.error(error);
