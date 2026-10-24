@@ -27,6 +27,12 @@
           aria-hidden="true"
         ></video>
 
+        <button type="button" class="icon-button hero__toggle" data-action="toggle-video" aria-pressed="false" aria-label="Play background video" data-i18n-aria-label="hero.videoLabel">
+          <svg width="16" height="16" aria-hidden="true" focusable="false">
+            <use href="assets/icons.svg#play"></use>
+          </svg>
+        </button>
+
         <section id="intro" class="intro">
           <img
             class="intro__photo"
@@ -189,5 +195,6 @@
 
     <script type="module" src="js/language-dialog.js"></script>
     <script type="module" src="js/projects.js"></script>
+    <script type="module" src="js/hero-video.js"></script>
   </body>
 </html>
