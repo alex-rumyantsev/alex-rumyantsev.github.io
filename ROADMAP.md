@@ -2,8 +2,15 @@
 
 > File is temporary and must be removed later.
 
-## Projects Area
+## Video optimization
 
-Project zone should has view mods: list, tiles etc, main preview. Main preview is when left side of screen has common title and description and other common info from the git (stars count, last date etc), right side has huge preview image.
-Project zone should has search box.
-Every project has two view states: hover and standard. Standard is a preview image and no more. Hover (when user put mouse inside it), image blured and shows text with Title, description.
+- Re-encode `assets/hero-background.mp4`: it is 10 MB and stutters while it downloads on a slow connection.
+- Target a size of 1–3 MB, with no audio track.
+- Check that the video plays smoothly on the first visit, and not only after it has looped.
+
+## Projects
+
+- Add a preview.svg to existed private repo.
+- Add the stars count and other GitHub info to the main view.
+- Add a second project, to test the gallery.
+- Find the behavior: user should has ability go to project by click on some button or link.
