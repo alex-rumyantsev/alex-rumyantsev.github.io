@@ -74,11 +74,12 @@ jobs:
                 pushed_at,
                 stars: .stargazers_count,
                 url: (
-                  if .private
-                  then (if (.homepage // "") != "" then .homepage else null end)
-                  else .html_url
+                  if (.homepage // "") != ""
+                  then .homepage
+                  else "project.html?name=" + .name
                   end
                 ),
+                repository: (if .private then null else .html_url end),
                 preview: (
                   if ($previews[0] | index($name)) != null
                   then "data/showcase/" + $name + "/preview.svg"
