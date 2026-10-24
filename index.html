@@ -50,9 +50,57 @@
       </div>
 
       <section id="projects" class="projects">
-        <h2 data-i18n="projects.heading">Projects</h2>
+        <div class="projects__header">
+          <h2 data-i18n="projects.heading">Projects</h2>
+          <div class="projects__tools">
+            <input type="search" class="projects__search" placeholder="Search" aria-label="Search projects" data-i18n-placeholder="search.placeholder" data-i18n-aria-label="projects.searchLabel" hidden />
+            <button type="button" class="icon-button" data-action="search" aria-label="Search projects" data-i18n-aria-label="projects.searchLabel">
+              <svg width="16" height="16" aria-hidden="true" focusable="false">
+                <use href="assets/icons.svg#search"></use>
+              </svg>
+            </button>
+            <div class="projects__filter">
+              <button type="button" class="icon-button" data-action="filter" aria-expanded="false" aria-controls="filter-menu" aria-label="Filter projects" data-i18n-aria-label="projects.filterLabel">
+                <svg width="16" height="16" aria-hidden="true" focusable="false">
+                  <use href="assets/icons.svg#funnel"></use>
+                </svg>
+              </button>
+              <ul id="filter-menu" class="projects__filter-menu" hidden></ul>
+            </div>
+          <div class="projects__views">
+            <button type="button" class="icon-button" data-action="view" aria-expanded="false" aria-controls="view-menu" aria-label="Change view" data-i18n-aria-label="projects.viewLabel">
+              <svg width="16" height="16" aria-hidden="true" focusable="false">
+                <use href="assets/icons.svg#tiles"></use>
+              </svg>
+            </button>
+            <ul id="view-menu" class="projects__view-menu" hidden>
+              <li>
+                <button type="button" class="icon-button" data-view="tiles" aria-pressed="true" aria-label="Tiles" data-i18n-aria-label="projects.viewTiles">
+                  <svg width="16" height="16" aria-hidden="true" focusable="false">
+                    <use href="assets/icons.svg#tiles"></use>
+                  </svg>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="icon-button" data-view="list" aria-pressed="false" aria-label="List" data-i18n-aria-label="projects.viewList">
+                  <svg width="16" height="16" aria-hidden="true" focusable="false">
+                    <use href="assets/icons.svg#list"></use>
+                  </svg>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="icon-button" data-view="main" aria-pressed="false" aria-label="Main preview" data-i18n-aria-label="projects.viewMain">
+                  <svg width="16" height="16" aria-hidden="true" focusable="false">
+                    <use href="assets/icons.svg#main"></use>
+                  </svg>
+                </button>
+              </li>
+            </ul>
+          </div>
+          </div>
+        </div>
 
-        <div class="projects__grid">
+        <div class="projects__grid" data-view="tiles">
           <!-- Project card: copy this whole block to add a project -->
           <article class="project-card">
             <h3>Project name</h3>
@@ -98,10 +146,8 @@
       <!-- Language button -->
       <div class="footer__language">
         <button type="button" class="lang-button" aria-label="Change language" aria-haspopup="dialog">
-          <svg class="lang-button__icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.5"/>
-            <ellipse cx="8" cy="8" rx="2.75" ry="6.25" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M2 8h12" stroke="currentColor" stroke-width="1.5"/>
+          <svg class="lang-button__icon" width="16" height="16" aria-hidden="true" focusable="false">
+            <use href="assets/icons.svg#globe"></use>
           </svg>
           <span class="lang-button__name">English</span>
           <span class="lang-button__region">United States</span>

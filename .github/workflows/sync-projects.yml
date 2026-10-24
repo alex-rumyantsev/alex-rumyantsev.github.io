@@ -11,21 +11,43 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.PORTFOLIO_SYNC_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Fetch repositories
-        env:
-          GH_TOKEN: ${{ secrets.PORTFOLIO_SYNC_TOKEN }}
         run: |
-          mkdir -p data
           curl --fail --silent --show-error \
             --header "Authorization: Bearer $GH_TOKEN" \
             --header "Accept: application/vnd.github+json" \
             --output repos.json \
             "https://api.github.com/user/repos?per_page=100"
-          jq '[ .[]
+
+      - name: Fetch previews
+        run: |
+          rm -rf data/previews
+          mkdir -p data/previews
+          jq -r '.[] | select(.topics | index("portfolio")) | .full_name' repos.json |
+          while read -r full_name; do
+            name="${full_name#*/}"
+            status=$(curl --silent --location \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              --header "Accept: application/vnd.github.raw+json" \
+              --output "data/previews/${name}.svg" \
+              --write-out '%{http_code}' \
+              "https://api.github.com/repos/${full_name}/contents/preview.svg")
+            if [ "$status" != "200" ]; then
+              rm -f "data/previews/${name}.svg"
+            fi
+          done
+
+      - name: Build projects data
+        run: |
+          ls -1 data/previews | jq -R . | jq -s . > previews.json
+          jq --slurpfile previews previews.json '[ .[]
             | select(.topics | index("portfolio"))
+            | .name as $name
             | {
                 name,
                 description,
@@ -36,15 +58,19 @@ jobs:
                   then (if (.homepage // "") != "" then .homepage else null end)
                   else .html_url
                   end
+                ),
+                preview: (
+                  if ($previews[0] | index($name + ".svg")) != null
+                  then "data/previews/" + $name + ".svg"
+                  else null
+                  end
                 )
               } ]' repos.json > data/projects.json
-
-                jq '[ .[] | { name, private, topics } ]' repos.json
 
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/projects.json
+          git add data
           git diff --staged --quiet || git commit -m "chore: update projects data"
           git push
