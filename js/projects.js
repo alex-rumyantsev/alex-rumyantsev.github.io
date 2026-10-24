@@ -6,9 +6,11 @@
 import { translate } from './i18n.js';
 
 const DATA_URL = 'data/projects.json';
+const COLORS_URL = 'data/language-colors.json';
 const PLACEHOLDER_URL = 'assets/placeholder.svg';
 
 let repositories = [];
+let languageColors = {};
 let query = '';
 
 let activeLanguage = null;
@@ -92,6 +94,8 @@ function createCard(repository, dateFormat) {
     tags.className = 'project-card__tags';
     const tag = document.createElement('li');
     tag.textContent = repository.language;
+    const color = languageColors[repository.language];
+    if (color) tag.style.setProperty('--language-color', color);
     tags.append(tag);
     body.append(tags);
   }
@@ -367,6 +371,14 @@ async function init() {
     // The placeholder card stays as the fallback.
     console.error(error);
     return;
+  }
+
+  try {
+    const response = await fetch(COLORS_URL);
+    if (response.ok) languageColors = await response.json();
+  } catch (error) {
+    // Without colors the tags simply keep the default look.
+    console.error(error);
   }
 
   initFilter();
