@@ -552,6 +552,7 @@ body {
   .projects__grid[data-view="main"] .project-card__preview {
     grid-column: 1;
     grid-row: 1;
+    touch-action: pan-y;
   }
 
   .projects__grid[data-view="main"] .project-card__body {

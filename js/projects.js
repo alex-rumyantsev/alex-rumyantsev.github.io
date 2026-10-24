@@ -288,6 +288,31 @@ function initGallery() {
     event.preventDefault();
     goTo(next);
   });
+
+  // Touch: swiping left over the front image shows the next project.
+  let swipeStartX = null;
+
+  grid.addEventListener('pointerdown', (event) => {
+    if (grid.dataset.view !== 'main' || event.pointerType !== 'touch') return;
+    if (!event.target.closest('.project-card__preview')) return;
+    swipeStartX = event.clientX;
+  });
+
+  grid.addEventListener('pointerup', (event) => {
+    if (swipeStartX === null) return;
+
+    const distance = event.clientX - swipeStartX;
+    swipeStartX = null;
+    if (Math.abs(distance) < 40) return;
+
+    const next = activeIndex + (distance < 0 ? 1 : -1);
+    if (next < 0 || next >= getCardCount()) return;
+    goTo(next);
+  });
+
+  grid.addEventListener('pointercancel', () => {
+    swipeStartX = null;
+  });
 }
 
 async function init() {
