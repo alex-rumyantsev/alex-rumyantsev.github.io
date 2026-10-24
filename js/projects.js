@@ -87,6 +87,22 @@ function createCard(repository, dateFormat) {
     body.append(tags);
   }
 
+  if (repository.stars > 0) {
+    const stars = document.createElement('span');
+    stars.className = 'project-card__stars';
+
+    const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    icon.setAttribute('width', '16');
+    icon.setAttribute('height', '16');
+    icon.setAttribute('aria-hidden', 'true');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', 'assets/icons.svg#star');
+    icon.append(use);
+
+    stars.append(icon, repository.stars.toLocaleString(document.documentElement.lang));
+    body.append(stars);
+  }
+
   const updated = document.createElement('time');
   updated.className = 'project-card__updated';
   updated.dateTime = repository.pushed_at;

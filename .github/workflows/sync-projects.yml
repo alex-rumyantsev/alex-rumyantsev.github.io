@@ -53,6 +53,7 @@ jobs:
                 description,
                 language,
                 pushed_at,
+                stars: .stargazers_count,
                 url: (
                   if .private
                   then (if (.homepage // "") != "" then .homepage else null end)
