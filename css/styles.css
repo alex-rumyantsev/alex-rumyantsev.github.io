@@ -27,6 +27,7 @@ img {
   --color-button-hover-bg: rgba(0, 0, 0, 0.08);
   --color-text-on-video: #ffffffde;
   --color-subtext-on-video: #ffffff9f;
+  --color-video-control-bg: rgba(0, 0, 0, 0.35);
   --color-search-bg: rgba(0, 0, 0, 0.08);
   --color-search-border: rgba(0, 0, 0, 0.0);
   --color-card-bg: rgba(0, 0, 0, 0.04);
@@ -81,6 +82,23 @@ body {
   object-fit: cover;
   -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
+}
+
+.hero .icon-button.hero__toggle {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background-color: var(--color-video-control-bg);
+  color: var(--color-text-on-video);
+}
+
+.hero .icon-button.hero__toggle:hover {
+  background-color: var(--color-video-control-bg);
+  opacity: 0.75;
+}
+
+.hero .icon-button.hero__toggle:focus-visible {
+  outline-color: var(--color-text-on-video);
 }
 
 /* Intro */
