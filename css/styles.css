@@ -369,6 +369,36 @@ body {
   display: inline-flex;
 }
 
+/* Project links: the whole card is clickable in tiles and list, the main view has a button */
+
+.projects__grid[data-view="list"] .project-card[data-repository] {
+  position: relative;
+}
+
+.projects__grid:not([data-view="main"]) .project-card h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.project-card__open {
+  display: none;
+  align-self: flex-start;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  background-color: var(--color-button-hover-bg);
+  color: inherit;
+  text-decoration: none;
+}
+
+.project-card__open:hover {
+  opacity: 0.75;
+}
+
+.projects__grid[data-view="main"] .project-card__open {
+  display: inline-block;
+}
+
 /* Tiles view: image only, text appears over a blurred image on hover or focus */
 
 .projects__grid[data-view="tiles"] .project-card[data-repository] {
@@ -589,6 +619,74 @@ body {
     grid-column: 1;
     grid-row: 2;
   }
+}
+
+/* Project page */
+
+.project-page {
+  max-width: 60rem;
+  margin-inline: auto;
+  padding: 3rem 1.5rem;
+}
+
+.project-page__back {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: inherit;
+  opacity: 0.7;
+}
+
+.project-page__back:hover {
+  opacity: 1;
+}
+
+.project-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.project-page__content[hidden] {
+  display: none;
+}
+
+.project-page__preview {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.project-page__title {
+  font-size: clamp(1.5rem, 6vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.project-page__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0;
+  list-style: none;
+  opacity: 0.6;
+}
+
+.project-page__repository {
+  align-self: flex-start;
+  color: inherit;
+}
+
+.project-page__readme {
+  overflow-wrap: anywhere;
+}
+
+.project-page__readme > * + * {
+  margin-top: 1rem;
+}
+
+.project-page__readme img {
+  border-radius: 0.5rem;
 }
 
 /* Footer */

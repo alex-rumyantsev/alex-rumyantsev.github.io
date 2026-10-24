@@ -3,6 +3,8 @@
  * renders them as cards before the placeholder card.
  */
 
+import { translate } from './i18n.js';
+
 const DATA_URL = 'data/projects.json';
 const PLACEHOLDER_URL = 'assets/placeholder.svg';
 
@@ -36,6 +38,15 @@ function matchesQuery(repository) {
   return text.includes(query.trim().toLowerCase());
 }
 
+/** Opens project pages in the same tab and outside sites in a new one. */
+function setLinkTarget(link, url) {
+  link.href = url;
+  if (/^https?:/.test(url)) {
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+  }
+}
+
 /** Builds one project card from a repository object. */
 function createCard(repository, dateFormat) {
   const card = document.createElement('article');
@@ -62,9 +73,7 @@ function createCard(repository, dateFormat) {
   const title = document.createElement('h3');
   if (repository.url) {
     const link = document.createElement('a');
-    link.href = repository.url;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
+    setLinkTarget(link, repository.url);
     link.textContent = repository.name;
     title.append(link);
   } else {
@@ -108,6 +117,14 @@ function createCard(repository, dateFormat) {
   updated.dateTime = repository.pushed_at;
   updated.textContent = dateFormat.format(new Date(repository.pushed_at));
   body.append(updated);
+  if (repository.url) {
+    const open = document.createElement('a');
+    open.className = 'project-card__open';
+    open.dataset.i18n = 'projects.open';
+    open.textContent = 'View project';
+    setLinkTarget(open, repository.url);
+    body.append(open);
+  }
 
   card.append(body);
   return card;
@@ -130,6 +147,7 @@ function render() {
   grid.prepend(...cards);
 
   updateStack();
+  translate(grid);
 }
 
 /** Opens and closes the search field and filters the cards while typing. */

@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Project</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <main class="project-page">
+      <a class="project-page__back" href="index.html#projects" data-i18n="project.back">Back to projects</a>
+
+      <article class="project-page__content" hidden>
+        <img class="project-page__preview" alt="" />
+        <h1 class="project-page__title"></h1>
+        <p class="project-page__description"></p>
+        <ul class="project-page__meta"></ul>
+        <a class="project-page__repository" data-i18n="project.repository" target="_blank" rel="noopener noreferrer" hidden></a>
+        <div class="project-page__readme"></div>
+        <section class="project-page__downloads" hidden>
+          <h2 data-i18n="project.downloads">Downloads</h2>
+          <ul class="project-page__download-list"></ul>
+        </section>
+      </article>
+
+      <p class="project-page__message" data-i18n="project.notFound" hidden>Project not found.</p>
+    </main>
+
+    <script type="module" src="js/i18n.js"></script>
+    <script type="module" src="js/project.js"></script>
+  </body>
+</html>

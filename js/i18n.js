@@ -11,6 +11,8 @@ const SUPPORTED_LANGUAGES = ['en', 'ru', 'zh'];
 const DEFAULT_LANGUAGE = 'en';
 const STORAGE_KEY = 'language';
 
+let currentTranslations = null;
+
 /** Returns the language saved earlier in this browser, or null. */
 function getSavedLanguage() {
   try {
@@ -40,7 +42,7 @@ async function loadTranslations(language) {
 }
 
 /** Writes the translated texts into every marked element on the page. */
-function applyTranslations(translations) {
+function applyTranslations(translations, root = document) {
   const targets = [
     {
       selector: '[data-i18n]',
@@ -67,7 +69,7 @@ function applyTranslations(translations) {
   ];
 
   for (const { selector, dataKey, apply } of targets) {
-    document.querySelectorAll(selector).forEach((element) => {
+    root.querySelectorAll(selector).forEach((element) => {
       const key = element.dataset[dataKey];
       if (key in translations) {
         apply(element, translations[key]);
@@ -84,11 +86,17 @@ export async function setLanguage(language) {
     throw new Error(`Unsupported language: "${language}"`);
   }
   const translations = await loadTranslations(language);
+  currentTranslations = translations;
   applyTranslations(translations);
   document.documentElement.lang = language;
   document.dispatchEvent(
     new CustomEvent('site:language-change', { detail: { language } }),
   );
+}
+
+/** Translates the marked elements inside a part of the page that was added later. */
+export function translate(root) {
+  if (currentTranslations) applyTranslations(currentTranslations, root);
 }
 
 /** Shows the page in the given language and remembers the choice. */
