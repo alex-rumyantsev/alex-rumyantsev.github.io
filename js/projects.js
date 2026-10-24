@@ -15,6 +15,17 @@ let activeLanguage = null;
 function matchesLanguage(repository) {
   return activeLanguage === null || repository.language === activeLanguage;
 }
+let activeIndex = 0;
+
+/** Stores each card's distance from the front card in the CSS variable --offset. */
+function updateStack() {
+  const cards = [...document.querySelectorAll('.projects__grid [data-repository]')];
+  activeIndex = Math.min(activeIndex, Math.max(cards.length - 1, 0));
+  cards.forEach((card, index) => {
+    card.style.setProperty('--offset', String(index - activeIndex));
+    card.toggleAttribute('data-active', index === activeIndex);
+  });
+}
 
 /** True when the repository name, description or language contains the typed text. */
 function matchesQuery(repository) {
@@ -101,6 +112,8 @@ function render() {
 
   grid.querySelectorAll('[data-repository]').forEach((card) => card.remove());
   grid.prepend(...cards);
+
+  updateStack();
 }
 
 /** Opens and closes the search field and filters the cards while typing. */
@@ -227,9 +240,39 @@ function initViews() {
   });
 }
 
+/** In the main view, scrolling over the front image moves through the projects. */
+function initGallery() {
+  const grid = document.querySelector('.projects__grid');
+  if (!grid) return;
+
+  let lockedUntil = 0;
+
+  grid.addEventListener(
+    'wheel',
+    (event) => {
+      if (grid.dataset.view !== 'main' || event.ctrlKey) return;
+      if (!event.target.closest('.project-card__preview')) return;
+
+      const cardCount = grid.querySelectorAll('[data-repository]').length;
+      const direction = Math.sign(event.deltaY);
+      const next = activeIndex + direction;
+      // At either end the page scrolls as usual.
+      if (direction === 0 || next < 0 || next >= cardCount) return;
+
+      event.preventDefault();
+      if (event.timeStamp < lockedUntil) return;
+      activeIndex = next;
+      lockedUntil = event.timeStamp + 400;
+      updateStack();
+    },
+    { passive: false },
+  );
+}
+
 async function init() {
   initSearch();
   initViews();
+  initGallery();
   
   // Re-render so the dates follow the selected language.
   document.addEventListener('site:language-change', render);

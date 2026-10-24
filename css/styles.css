@@ -296,6 +296,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
   gap: 1.5rem;
+  isolation: isolate;
 }
 
 .project-card {
@@ -474,26 +475,41 @@ body {
   }
 }
 
-/* Main preview view: text on the left, large image on the right */
+/* Main preview view: text on the left, stacked image gallery on the right */
 
 .projects__grid[data-view="main"] {
+  --stack-shift: 2.5rem;
   grid-template-columns: minmax(0, 1fr);
   gap: 2rem;
+  overflow-x: clip;
 }
 
 .projects__grid[data-view="main"] .project-card[data-repository] {
+  position: relative;
+  z-index: calc(100 - var(--offset, 0));
+  grid-area: 1 / 1;
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   align-items: center;
-  gap: 2rem;
-  padding: 2rem;
+  column-gap: 9rem;
+  padding: 1rem 0;
+  border: 0;
+  background: none;
   overflow-wrap: anywhere;
+  pointer-events: none;
 }
 
 .projects__grid[data-view="main"] .project-card__preview {
   grid-column: 2;
   grid-row: 1;
   border-radius: 1rem;
+  transform-origin: right center;
+  transform: translateX(calc(max(var(--offset, 0), 0) * var(--stack-shift) * -1))
+    scale(calc(1 - max(var(--offset, 0), 0) * 0.08));
+  opacity: calc(
+    min(1, max(0, 1 + var(--offset, 0))) * min(1, max(0, 4 - var(--offset, 0)))
+  );
+  transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
 .projects__grid[data-view="main"] .project-card__body {
@@ -502,17 +518,32 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .projects__grid[data-view="main"] .project-card__body > h3 {
   font-size: 1.5rem;
 }
 
+.projects__grid[data-view="main"] .project-card[data-active] .project-card__body {
+  opacity: 1;
+}
+
+.projects__grid[data-view="main"] .project-card[data-active] .project-card__preview,
+.projects__grid[data-view="main"] .project-card[data-active] .project-card__body {
+  pointer-events: auto;
+}
+
 @media (max-width: 48rem) {
+  .projects__grid[data-view="main"] {
+    --stack-shift: 1rem;
+  }
+
   .projects__grid[data-view="main"] .project-card[data-repository] {
     grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
-    padding: 1rem;
+    row-gap: 1rem;
+    padding: 0;
   }
 
   .projects__grid[data-view="main"] .project-card__preview {
