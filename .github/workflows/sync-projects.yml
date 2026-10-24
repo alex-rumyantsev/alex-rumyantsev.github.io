@@ -36,7 +36,7 @@ jobs:
               --header "Accept: application/vnd.github.raw+json" \
               --output "data/previews/${name}.svg" \
               --write-out '%{http_code}' \
-              "https://api.github.com/repos/${full_name}/contents/preview.svg")
+              "https://api.github.com/repos/${full_name}/contents/showcase/preview.svg")
             if [ "$status" != "200" ]; then
               rm -f "data/previews/${name}.svg"
             fi
