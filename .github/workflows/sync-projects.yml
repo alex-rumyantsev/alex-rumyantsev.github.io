@@ -64,7 +64,14 @@ jobs:
           for directory in data/showcase/*/; do
             [ -f "${directory}preview.svg" ] && basename "$directory"
           done | jq -R . | jq -s . > previews.json
-          jq --slurpfile previews previews.json '[ .[]
+          for directory in data/showcase/*/; do
+            [ -d "$directory" ] || continue
+            jq -n --arg name "$(basename "$directory")" \
+              --arg readme "$([ -f "${directory}README.html" ] && echo true || echo false)" \
+              --argjson downloads "$(ls -1 "${directory}downloads" 2>/dev/null | jq -R . | jq -s .)" \
+              '{($name): {readme: ($readme == "true"), downloads: $downloads}}'
+          done | jq -s 'add // {}' > showcase.json
+          jq --slurpfile previews previews.json --slurpfile showcase showcase.json '[ .[]
             | select(.topics | index("portfolio"))
             | .name as $name
             | {
@@ -85,7 +92,9 @@ jobs:
                   then "data/showcase/" + $name + "/preview.svg"
                   else null
                   end
-                )
+                ),
+                readme: ($showcase[0][$name].readme // false),
+                downloads: ($showcase[0][$name].downloads // [])
               } ]' repos.json > data/projects.json
 
       - name: Commit changes
