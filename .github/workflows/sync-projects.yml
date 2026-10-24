@@ -24,27 +24,36 @@ jobs:
             --output repos.json \
             "https://api.github.com/user/repos?per_page=100"
 
-      - name: Fetch previews
+      - name: Fetch showcase files
         run: |
-          rm -rf data/previews
-          mkdir -p data/previews
+          rm -rf data/previews data/showcase
+          mkdir -p data/showcase
           jq -r '.[] | select(.topics | index("portfolio")) | .full_name' repos.json |
           while read -r full_name; do
             name="${full_name#*/}"
+            work=$(mktemp -d)
             status=$(curl --silent --location \
               --header "Authorization: Bearer $GH_TOKEN" \
-              --header "Accept: application/vnd.github.raw+json" \
-              --output "data/previews/${name}.svg" \
+              --header "Accept: application/vnd.github+json" \
+              --output "$work/repo.tar.gz" \
               --write-out '%{http_code}' \
-              "https://api.github.com/repos/${full_name}/contents/showcase/preview.svg")
-            if [ "$status" != "200" ]; then
-              rm -f "data/previews/${name}.svg"
+              "https://api.github.com/repos/${full_name}/tarball")
+            if [ "$status" = "200" ]; then
+              tar -xzf "$work/repo.tar.gz" -C "$work"
+              for source in "$work"/*/showcase; do
+                [ -d "$source" ] || continue
+                mkdir -p "data/showcase/$name"
+                cp -r "$source/." "data/showcase/$name/"
+              done
             fi
+            rm -rf "$work"
           done
 
       - name: Build projects data
         run: |
-          ls -1 data/previews | jq -R . | jq -s . > previews.json
+          for directory in data/showcase/*/; do
+            [ -f "${directory}preview.svg" ] && basename "$directory"
+          done | jq -R . | jq -s . > previews.json
           jq --slurpfile previews previews.json '[ .[]
             | select(.topics | index("portfolio"))
             | .name as $name
@@ -61,8 +70,8 @@ jobs:
                   end
                 ),
                 preview: (
-                  if ($previews[0] | index($name + ".svg")) != null
-                  then "data/previews/" + $name + ".svg"
+                  if ($previews[0] | index($name)) != null
+                  then "data/showcase/" + $name + "/preview.svg"
                   else null
                   end
                 )
