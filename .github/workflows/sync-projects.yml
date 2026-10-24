@@ -96,6 +96,16 @@ jobs:
                 readme: ($showcase[0][$name].readme // false),
                 downloads: ($showcase[0][$name].downloads // [])
               } ]' repos.json > data/projects.json
+      
+      - name: Fetch language colors
+        run: |
+          curl --fail --silent --show-error --location \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github.raw+json" \
+            --output languages.yml \
+            "https://api.github.com/repos/github-linguist/linguist/contents/lib/linguist/languages.yml"
+          yq -o=json '.' languages.yml |
+            jq 'with_entries(select(.value.color != null) | .value = .value.color)' > data/language-colors.json
 
       - name: Commit changes
         run: |
