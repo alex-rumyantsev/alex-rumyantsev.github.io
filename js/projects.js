@@ -221,6 +221,7 @@ function initViews() {
     if (!option) return;
 
     grid.dataset.view = option.dataset.view;
+    grid.tabIndex = option.dataset.view === 'main' ? 0 : -1;
     menu.querySelectorAll('[data-view]').forEach((item) => {
       item.setAttribute('aria-pressed', String(item === option));
     });
@@ -240,7 +241,18 @@ function initViews() {
   });
 }
 
-/** In the main view, scrolling over the front image moves through the projects. */
+/** Number of project cards currently shown. */
+function getCardCount() {
+  return document.querySelectorAll('.projects__grid [data-repository]').length;
+}
+
+/** Brings the card with the given index to the front. */
+function goTo(index) {
+  activeIndex = index;
+  updateStack();
+}
+
+/** In the main view, the wheel and the arrow keys move through the projects. */
 function initGallery() {
   const grid = document.querySelector('.projects__grid');
   if (!grid) return;
@@ -253,20 +265,29 @@ function initGallery() {
       if (grid.dataset.view !== 'main' || event.ctrlKey) return;
       if (!event.target.closest('.project-card__preview')) return;
 
-      const cardCount = grid.querySelectorAll('[data-repository]').length;
       const direction = Math.sign(event.deltaY);
       const next = activeIndex + direction;
       // At either end the page scrolls as usual.
-      if (direction === 0 || next < 0 || next >= cardCount) return;
+      if (direction === 0 || next < 0 || next >= getCardCount()) return;
 
       event.preventDefault();
       if (event.timeStamp < lockedUntil) return;
-      activeIndex = next;
       lockedUntil = event.timeStamp + 400;
-      updateStack();
+      goTo(next);
     },
     { passive: false },
   );
+
+  grid.addEventListener('keydown', (event) => {
+    if (grid.dataset.view !== 'main') return;
+
+    const step = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
+    const next = activeIndex + (step ?? 0);
+    if (!step || next < 0 || next >= getCardCount()) return;
+
+    event.preventDefault();
+    goTo(next);
+  });
 }
 
 async function init() {
