@@ -45,6 +45,16 @@ jobs:
                 mkdir -p "data/showcase/$name"
                 cp -r "$source/." "data/showcase/$name/"
               done
+              if [ -f "data/showcase/$name/README.md" ]; then
+                jq -Rs '{text: ., mode: "gfm"}' "data/showcase/$name/README.md" |
+                  curl --silent --show-error --fail \
+                    --header "Authorization: Bearer $GH_TOKEN" \
+                    --header "Accept: text/html" \
+                    --header "Content-Type: application/json" \
+                    --data @- \
+                    --output "data/showcase/$name/README.html" \
+                    "https://api.github.com/markdown"
+              fi
             fi
             rm -rf "$work"
           done
