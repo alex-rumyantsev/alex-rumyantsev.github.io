@@ -2,8 +2,9 @@
   {
     "name": "fea-topomatic-robur-plugin",
     "description": "Plugin for Topomatic Robur that converts BREP models to FEA meshes, exports to popular FEA solvers, and includes a built-in analyzer.",
-    "language": null,
-    "pushed_at": "2026-10-23T20:01:34Z",
-    "url": null
+    "language": "C#",
+    "pushed_at": "2026-10-25T01:48:21Z",
+    "url": null,
+    "preview": null
   }
 ]
